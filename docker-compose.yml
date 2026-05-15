@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: unad_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: unad2026
+      POSTGRES_DB: diseno-bases-de-datos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: unad_cloudbeaver
+    ports:
+      - "8978:8978"
+    depends_on:
+      - postgres
+volumes:
+  postgres_data:
+    driver: local
