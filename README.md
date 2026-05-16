@@ -58,7 +58,7 @@ docker-unad/
 
 ## Modelado de bases de datos
 
-Para diagramas entidad-relación no necesitás instalar nada adicional. Puedes instalar [draw.io](https://app.diagrams.net/) directamente desde el navegador, que tiene soporte nativo para diagramas de bases de datos.
+Para diagramas entidad-relación no necesitás instalar nada adicional. Puedes usar [draw.io](https://app.diagrams.net/) directamente desde el navegador, que tiene soporte nativo para diagramas de bases de datos.
 
 ## Iniciativa
 
