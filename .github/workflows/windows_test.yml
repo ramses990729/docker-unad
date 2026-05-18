@@ -7,6 +7,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
+  pull_request: 
+    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,20 +35,23 @@ jobs:
         run: docker compose up -d
 
       # Runs a set of commands using the runners shell
-      - name: Wait for PGAdmin
+      - name: Wait for pgAdmin
         run: |
-          $timeout = 60
-          $elapsed = 0
-          while ($elapsed -lt $timeout) {
-            try {
-              $response = Invoke-WebRequest -Uri "http://localhost:5050" -TimeoutSec 5
-              if ($response.StatusCode -eq 200) {
-                Write-Host "pgAdmin ready!"
-                break
-              }
-            } catch {}
-            Start-Sleep -Seconds 2
-            $elapsed += 2
-          }
+          TIMEOUT=60
+          ELAPSED=0
+          until curl -s http://localhost:5050 > /dev/null; do
+            sleep 2
+            ELAPSED=$((ELAPSED + 2))
+            if [ $ELAPSED -ge $TIMEOUT ]; then
+              echo "Timeout esperando pgAdmin"
+              docker compose logs
+              exit 1
+            fi
+          done
+          echo "pgAdmin listo!"
+
       - name: Verify pgAdmin responds
-        run: curl -s -o nul -w "%{http_code}" http://localhost:5050
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5050)
+          echo "HTTP Status: $STATUS"
+          if [ $STATUS -ne 200 ]; then exit 1; fi
