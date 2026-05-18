@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,6 +23,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      - name: Switch to Linux containers
+        run: |
+          & "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
+        shell: pwsh
+        
       # Runs a single command using the runners shell
       - name: Start Docker compose
         run: docker compose up -d
