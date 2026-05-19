@@ -16,16 +16,25 @@ if %errorlevel% neq 0 (
 echo.
 echo Esperando a que el entorno este listo...
 
+set TIMEOUT=90
+set ELAPSED=0
+
 :wait
 curl -s http://localhost:8978 >nul 2>&1
-echo.
 if %errorlevel% neq 0 (
-    timeout /t 2 /nobreak >nul
+    timeout /t 3 /nobreak >nul
+    set /a ELAPSED+=3
+    if %ELAPSED% geq %TIMEOUT% (
+        echo.
+        echo El entorno esta tardando mas de lo esperado en iniciar.
+        echo Si el navegador no carga, espera un momento y accede manualmente a:
+        echo http://localhost:8978
+        start http://localhost:8978
+        exit /b 0
+    )
     goto wait
 )
 
 echo Listo! Abriendo navegador...
-echo Usuario: estudiante@unad.edu.co
-echo Contrasena: unad2026
 start http://localhost:8978
 pause
