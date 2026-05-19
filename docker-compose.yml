@@ -3,31 +3,20 @@ services:
     image: postgres:16
     container_name: unad_postgres
     environment:
-      POSTGRES_USER: admin
+      POSTGRES_USER: unad
       POSTGRES_PASSWORD: unad2026
       POSTGRES_DB: diseno-bases-de-datos
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  pgadmin:
-    image: dpage/pgadmin4:8.6
-    container_name: unad_pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: estudiante@unad.edu.co
-      PGADMIN_DEFAULT_PASSWORD: unad2026
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: unad_cloudbeaver
     ports:
-      - "5050:80"
+      - "8978:8978"
     depends_on:
       - postgres
-  # Use if we finally want to use cloudbeaver instead of pgadmin
-  # cloudbeaver:
-  #   image: dbeaver/cloudbeaver:latest
-  #   container_name: unad_cloudbeaver
-  #   ports:
-  #     - "8978:8978"
-  #   depends_on:
-  #     - postgres
 volumes:
   postgres_data:
     driver: local
