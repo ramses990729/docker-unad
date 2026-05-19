@@ -40,7 +40,7 @@ Asegurate de que Docker Desktop esté **abierto y corriendo** antes de ejecutar 
 |-------|-------|
 | Host | `postgres` |
 | Puerto | `5432` |
-| Base de datos | `basesdatos` |
+| Base de datos | `diseno-bases-de-datos` |
 | Usuario | `unad` |
 | Contraseña | `unad2026` |
 
