@@ -1,0 +1,42 @@
+services:
+  # ── BASE DE DATOS ──────────────────────────────
+  # Cambia la imagen según el motor que necesites:
+  #   postgres:16
+  #   mysql:8.0
+  #   mongo:7.0
+  db:
+    image: postgres:16
+    container_name: mi_curso_db
+    restart: unless-stopped
+    environment:
+      # PostgreSQL
+      POSTGRES_USER: estudiante
+      POSTGRES_PASSWORD: unad2026
+      POSTGRES_DB: mi_curso
+
+      # MySQL (comentar las de arriba y descomentar estas)
+      # MYSQL_ROOT_PASSWORD: unad2026
+      # MYSQL_DATABASE: mi_curso
+      # MYSQL_USER: estudiante
+      # MYSQL_PASSWORD: unad2026
+
+    ports:
+      - "5432:5432"   # postgres
+      # - "3306:3306" # mysql
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # - db_data:/var/lib/mysql  # mysql
+
+  # ── INTERFAZ WEB ───────────────────────────────
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: mi_curso_ui
+    restart: unless-stopped
+    ports:
+      - "8978:8978"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+    driver: local
